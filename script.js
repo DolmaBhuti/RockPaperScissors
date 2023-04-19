@@ -1,80 +1,93 @@
+const playerScore_span = document.getElementById("user-score");
+const compScore_span = document.getElementById("comp-score");
+const scoreBoard_div = document.querySelector(".scoreboard");
+const result_div = document.querySelector(".result");
+const rock_btn = document.getElementById("rock");
+const paper_btn = document.getElementById("paper");
+const scissor_btn = document.getElementById("scissor");
+let playerScore = 0;
+let compScore = 0;
+
+function main() {
+  rock_btn.addEventListener("click", function () {
+    //only play if one of the players havent reacfhed 5
+    playRound("rock");
+  });
+  paper_btn.addEventListener("click", function () {
+    playRound("paper");
+  });
+  scissor_btn.addEventListener("click", function () {
+    playRound("scissor");
+  });
+}
+
+//if either player has reached 5 points, return false
+var gameOver = function () {
+  if (playerScore === 5) {
+    result_div.textContent = "You WIN!";
+    return true;
+  } else if (compScore === 5) {
+    result_div.textContent = "You LOSE!";
+    return true;
+  }
+  return false;
+};
 var getComputerChoice = function () {
   let randomNumber = Math.floor(Math.random() * 3) + 1; //The following would give us a random number between 1 and 3:
 
   if (randomNumber === 1) {
-    console.log("Computer Chooses Rock");
-    return "Rock";
+    return "rock";
   } else if (randomNumber === 2) {
-    console.log("Computer Chooses Paper");
-    return "Paper";
+    return "paper";
   } else if (randomNumber === 3) {
-    console.log("Computer Chooses Scissors");
-    return "Scissors";
+    return "scissor";
   }
 };
 
-var playRockPaperScissors = (playerSelection, computerSelection) => {
-  var player = playerSelection.toLowerCase();
-  var comp = computerSelection.toLowerCase();
-
-  if (player === "rock") {
-    if (comp === "rock") {
-      return "Its a Tie! You Both Choose Rock";
-    } else if (comp === "paper") {
-      return "You Lose! Paper Beats Rock";
-    } else {
-      return "You Win! Rock Beats Scissors";
-    }
-  } else if (player === "paper") {
-    if (comp === "rock") {
-      return "You Win! Paper Beats Rock";
-    } else if (comp === "paper") {
-      return "Its a Tie! You Both Choose Paper";
-    } else {
-      return "You Lose! Scissor Beats Paper";
-    }
-  } else if (player === "scissors") {
-    if (comp === "rock") {
-      return "You Lost! Rock Beats Scissors";
-    } else if (comp === "paper") {
-      return "You Win! Scissor Beats Rock";
-    } else {
-      return "Its a Tie! You Both Choose Scissors";
-    }
-  }
-};
-
-var game = function () {
-  let count = 0;
-  let playerScore = 0;
-  let compScore = 0;
-
-  while (count < 5) {
-    //Use prompt() to get input from the user.
-    let playerSelection = prompt("Rock, Paper, or Scissors?");
+var playRound = (playerSelection) => {
+  if (!gameOver()) {
     const computerSelection = getComputerChoice();
-    let result = playRockPaperScissors(playerSelection, computerSelection);
+    var player = playerSelection.toLowerCase();
+    var comp = computerSelection.toLowerCase();
 
-    //display the results of each round
-    console.log(result);
-    if (result.toLowerCase().includes("win")) {
-      ++playerScore;
-      ++count;
-    } else if (result.toLowerCase().includes("lose")) {
-      {
+    //rock-scissor -> rock wins
+    //paper-rock -> paper wins
+    //scissor-paper -> scissor
+    if (player === comp) {
+      result_div.textContent = "It's a tie! you both choose " + player;
+    } else if (player === "rock") {
+      if (comp === "paper") {
         ++compScore;
-        ++count;
+        compScore_span.textContent = compScore;
+        result_div.textContent = "Paper Covers Rock.  You lose.";
+      } else {
+        ++playerScore;
+        playerScore_span.textContent = playerScore;
+        result_div.textContent = "Rock smashes scissor.  You win!";
       }
-    } else {
-      console.log("It's a tie");
+    } else if (player === "paper") {
+      if (comp === "scissor") {
+        ++compScore;
+        compScore_span.textContent = compScore;
+        result_div.textContent = "Scissor cuts paper.  You lose.";
+      } else {
+        ++playerScore;
+        playerScore_span.textContent = playerScore;
+        result_div.textContent = "Paper covers rock.  You win!";
+      }
+    } else if (player === "scissor") {
+      if (comp === "rock") {
+        ++playerScore;
+        playerScore_span.textContent = playerScore;
+        result_div.textContent = "Rock smashes scissor.  You win!";
+      } else {
+        ++compScore;
+        compScore_span.textContent = compScore;
+        result_div.textContent = "Scissor cuts paper.  You lose.";
+      }
     }
   }
-  //display the winner at the end
-  if (playerScore > compScore) {
-    console.log(`You Win! You have ${playerScore} points`);
-  } else {
-    console.log(`You Lose! You have ${playerScore} points`);
-  }
-  return;
+  gameOver();
 };
-game();
+
+main();

@@ -5,8 +5,28 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
+    <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
+    <header><h1>Rock Paper Scissors</h1></header>
+    <div class="scoreboard">
+      <div id="user-lbl" class="score">
+        You : <span id="user-score">0</span>
+      </div>
+      <div id="computer-lbl" class="score">
+        Computer : <span id="comp-score">0</span>
+      </div>
+    </div>
+
+    <div class="result"></div>
+
+    <div class="rps-choices">
+      <button class="choice" id="rock">Rock</button>
+      <button class="choice" id="paper">Paper</button>
+      <button class="choice" id="scissor">Scissor</button>
+    </div>
+
+    <p class="call-to-action">Make Your Move</p>
     <script src="./script.js"></script>
   </body>
 </html>
